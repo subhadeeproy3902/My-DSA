@@ -40,5 +40,12 @@ int main(){
 }
 ```
 
-1
-2
+1. Doubly - Done
+2. Deque - Done 
+3. Priority Q- Done
+4. Add and Mul - Done
+5. Sort List - Done
+6. Parenthesis Checker - Done
+7. Binary Search - Done
+8. Interpolation Search - Done
+9. 

@@ -33,33 +33,18 @@ void printList(Node *head)
 
 Node *reverseInKPairs(Node *head, int k)
 {
-  Node *prev = NULL;
-  Node *curr = head;
-  int x = 0;
-  Node *forward = NULL;
-
-  Node *count = head;
-  int y = 0;
-  while (count != NULL)
+  Node *prev = NULL, *curr = head, *next = NULL;
+  int count = 0;
+  while (curr != NULL && count < k)
   {
-    count = count->next;
-    y++;
-  }
-  if (y < k)
-    return head;
-
-  while (curr != NULL && x < k)
-  {
-    forward = curr->next;
+    next = curr->next;
     curr->next = prev;
     prev = curr;
-    curr = forward;
-    x++;
+    curr = next;
+    count++;
   }
-  if (forward != NULL)
-  {
-    head->next = reverseInKPairs(forward, k);
-  }
+  if (next != NULL)
+    head->next = reverseInKPairs(next, k);
   return prev;
 }
 

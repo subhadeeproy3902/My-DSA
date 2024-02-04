@@ -4,34 +4,35 @@
 typedef struct Node
 {
   int data;
+  int priority;
   struct Node *next;
 } Node;
 
-Node *createNode(int data)
+Node *createNode(int data, int priority)
 {
   Node *n = (Node *)malloc(sizeof(Node));
   n->data = data;
+  n->priority = priority;
   n->next = NULL;
   return n;
 }
 
-Node *push(Node *head, int data)
+Node *insert(Node *head, int data, int priority)
 {
-  if (!head)
-    return createNode(data);
-  Node *n = createNode(data);
-  n->next = head;
-  head = n;
+  Node *node = createNode(data, priority);
+  if (!head || head->priority > priority)
+  {
+    node->next = head;
+    return node;
+  }
+  head->next = insert(head->next, data, priority);
   return head;
 }
 
-void pop(Node **head)
+void delete(Node **head)
 {
-  if (!(*head))
-  {
-    printf("Stack underflow\n");
+  if (!*head)
     return;
-  }
   Node *temp = *head;
   *head = (*head)->next;
   free(temp);
@@ -40,11 +41,9 @@ void pop(Node **head)
 void peek(Node *head)
 {
   if (!head)
-  {
-    printf("Stack is empty\n");
-    return;
-  }
-  printf("%d\n", head->data);
+    printf("Queue Empty\n");
+  else
+    printf("Data: %d  Priority: %d\n", head->data, head->priority);
 }
 
 void display(Node *head)
@@ -55,35 +54,15 @@ void display(Node *head)
   display(head->next);
 }
 
-void swap(int *a, int* b){
-  int temp = *a;
-  *a = *b;
-  *b = temp;
-}
-
-void sort(Node* head){
-  Node* i = head;
-  while(i){
-    Node* j = i->next;
-    while(j){
-      if(i->data > j->data){
-        swap(&i->data, &j->data);
-      }
-      j = j->next;
-    }
-    i = i->next;
-  }
-}
-
 int main()
 {
   printf("0. Exit\n");
-  printf("1. Push\n");
-  printf("2. Pop\n");
+  printf("1. Enqueue\n");
+  printf("2. Dequeue\n");
   printf("3. Peek\n");
   printf("4. Display\n");
 
-  int choice, data;
+  int choice, data, priority;
   Node *head = NULL;
 
   while (1)
@@ -98,10 +77,12 @@ int main()
     case 1:
       printf("Enter data: ");
       scanf("%d", &data);
-      head = push(head, data);
+      printf("Enter priority: ");
+      scanf("%d", &priority);
+      head = insert(head, data, priority);
       break;
     case 2:
-      pop(&head);
+      delete (&head);
       break;
     case 3:
       peek(head);
@@ -111,7 +92,7 @@ int main()
       printf("\n");
       break;
     default:
-      printf("Invalic choice...\n");
+      printf("Invalid choice...\n");
     }
   }
   return 0;
