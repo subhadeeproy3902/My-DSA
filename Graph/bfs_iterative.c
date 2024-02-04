@@ -1,6 +1,6 @@
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define MAX_VERTICES 50
 
@@ -13,6 +13,7 @@ typedef struct Graph_t
 } Graph;
 
 // Constructor
+
 Graph *Graph_create(int V)
 {
   Graph *g = malloc(sizeof(Graph));
@@ -29,59 +30,43 @@ Graph *Graph_create(int V)
   return g;
 }
 
-void Graph_destroy(Graph *g) { free(g); }
+void Graph_destroy(Graph *g)
+{
+  free(g);
+}
 
 void Graph_addEdge(Graph *g, int v, int w)
 {
   g->adj[v][w] = true;
-  g->adj[w][v] = true;
 }
 
-void BFS_recursive(Graph *g, int s, bool visited[MAX_VERTICES], int queue[MAX_VERTICES], int front, int rear)
-{
-  if (front == rear)
-    return;
-  s = queue[front++];
-  printf("%d ", s);
-
-  for (int adjacent = 0; adjacent < g->V; adjacent++)
-  {
-    if (g->adj[s][adjacent] && !visited[adjacent])
-    {
-      visited[adjacent] = true;
-      queue[rear++] = adjacent;
-    }
-  }
-
-  BFS_recursive(g, s, visited, queue, front, rear);
-}
-
-void Graph_BFS(Graph *g, int s)
+void BFS_iterative(Graph *g, int s)
 {
   bool visited[MAX_VERTICES];
+  int queue[MAX_VERTICES];
+  int front = 0, rear = 0;
+
   for (int i = 0; i < g->V; i++)
   {
     visited[i] = false;
   }
 
-  int queue[MAX_VERTICES];
-  int front = 0, rear = 0;
-
   visited[s] = true;
   queue[rear++] = s;
 
-  BFS_recursive(g, s, visited, queue, front, rear);
-}
-
-void printGraph(Graph *g)
-{
-  for (int i = 0; i < g->V; i++)
+  while (front != rear)
   {
-    for (int j = 0; j < g->V; j++)
+    s = queue[front++];
+    printf("%d ", s);
+
+    for (int adjacent = 0; adjacent < g->V; adjacent++)
     {
-      printf("%d ", g->adj[i][j]);
+      if (g->adj[s][adjacent] && !visited[adjacent])
+      {
+        visited[adjacent] = true;
+        queue[rear++] = adjacent;
+      }
     }
-    printf("\n");
   }
 }
 
@@ -119,32 +104,24 @@ void BFS_LevelwisePrint(Graph *g, int s)
   }
 }
 
-
 int main()
 {
-  // Graph 1
-  Graph *g = Graph_create(9);
+  Graph *g = Graph_create(4);
+
   Graph_addEdge(g, 0, 1);
-  Graph_addEdge(g, 0, 5);
+  Graph_addEdge(g, 0, 2);
   Graph_addEdge(g, 1, 2);
-  Graph_addEdge(g, 1, 3);
-  Graph_addEdge(g, 3, 4);
-  Graph_addEdge(g, 4, 7);
-  Graph_addEdge(g, 5, 6);
-  Graph_addEdge(g, 5, 8);
-  Graph_addEdge(g, 6, 7);
+  Graph_addEdge(g, 2, 0);
+  Graph_addEdge(g, 2, 3);
+  Graph_addEdge(g, 3, 3);
 
-  printGraph(g);
+  printf("BFS Levelwise Print:\n");
+  BFS_iterative(g, 2);
 
-  printf("Following is Breadth First Traversal (starting from vertex 2) \n");
-  Graph_BFS(g, 0);
+  printf("\nBFS Levelwise Print:\n");
+  BFS_LevelwisePrint(g, 2);
 
-  printf("\n");
-
-  BFS_LevelwisePrint(g, 0);
   Graph_destroy(g);
 
   return 0;
 }
-
-//

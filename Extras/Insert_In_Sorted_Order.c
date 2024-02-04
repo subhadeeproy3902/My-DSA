@@ -15,59 +15,48 @@ Node *createNode(int data)
   return newNode;
 }
 
-Node *insertAtAny(Node *head, int data, int pos)
+Node *insert(Node *head, int data)
 {
-  if (head == NULL)
-  {
-    if (pos != 1)
-    {
-      printf("Invalid position\n");
-      return head;
-    }
+  if (!head)
     return createNode(data);
-  }
-  if (pos < 1)
-  {
-    printf("Invalid position\n");
-    return head;
-  }
-  if (pos == 1)
+  if (head->data > data)
   {
     Node *newNode = createNode(data);
     newNode->next = head;
     return newNode;
   }
-  head->next = insertAtAny(head->next, data, pos - 1);
+  head->next = insert(head->next, data);
   return head;
 }
 
 void printList(Node *head)
 {
-  if (head == NULL)
+  if (!head)
     return;
-  printf("%d-> ", head->data);
+  printf("%d ", head->data);
   printList(head->next);
 }
 
 int main()
 {
   Node *head = NULL;
-  printf("0. Exit\n1. Insert at any position\n2. Print List\n");
-  int choice, data, pos;
+  printf("0. Exit\n");
+  printf("1. Insert\n");
+  printf("2. Print\n");
+  int choice, data;
+
   while (1)
   {
-    printf("Enter choice: ");
+    printf("Enter your choice: ");
     scanf("%d", &choice);
     switch (choice)
     {
     case 0:
-      exit(0);
+      return 0;
     case 1:
-      printf("Enter data: ");
+      printf("Enter the data: ");
       scanf("%d", &data);
-      printf("Enter position: ");
-      scanf("%d", &pos);
-      head = insertAtAny(head, data, pos);
+      head = insert(head, data);
       break;
     case 2:
       printList(head);
