@@ -39,8 +39,9 @@ int main(){
     return 0;
 }
 ```
+Practice List for lab exm :(  --->
 
-1. Doubly - Done
+1. Doubly LL - Done
 2. Deque - Done 
 3. Priority Q- Done
 4. Add and Mul - Done
@@ -48,4 +49,21 @@ int main(){
 6. Parenthesis Checker - Done
 7. Binary Search - Done
 8. Interpolation Search - Done
-9. 
+9. Merge Sort - Done
+10. Insertion Sort - Done
+11. CLL - Done
+12. BST - Done
+13. Insert In a Sorted Way - Done
+14. AVL - Done
+15. Horner
+16. BFS
+17. DFS
+18. Infix to Postfix
+19. Prefix to Postfix
+20. Postfix Evaluation - Done
+21. Tower Of Hanoi
+22. Stack with Q - Done
+23. Q with Stack - Done
+24. Expression Tree 
+25. Josephus 
+26. Heap Sort
