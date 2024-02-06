@@ -3,63 +3,46 @@
 
 typedef struct Node
 {
-  int data;
+  int data, priority;
   struct Node *next;
 } Node;
 
-Node *createNode(int data)
+Node *createNode(int data, int priority)
 {
-  Node *node = (Node *)malloc(sizeof(Node));
-  node->data = data;
-  node->next = NULL;
-  return node;
+  Node *n = (Node *)malloc(sizeof(Node));
+  n->data = data;
+  n->priority = priority;
+  n->next = NULL;
+  return n;
 }
 
-Node *enqueueStart(Node *head, int data)
+Node *insert(Node *head, int data, int priority)
 {
-  if (!head)
-    return createNode(data);
-  Node *node = createNode(data);
-  node->next = head;
-  head = node;
+  if (!head || head->priority > priority)
+  {
+    Node *n = createNode(data, priority);
+    n->next = head;
+    return n;
+  }
+  head->next = insert(head->next, data, priority);
   return head;
 }
 
-Node *enqueueEnd(Node *head, int data)
+void delete(Node **head)
 {
-  if (!head)
-    return createNode(data);
-  head->next = enqueueEnd(head->next, data);
-  return head;
-}
-
-void deleteStart(Node **head)
-{
-  if (!*head)
-    return;
   Node *temp = *head;
   *head = (*head)->next;
   free(temp);
 }
 
-void deleteEnd(Node **head)
-{
-  if (!*head)
-    return;
-  if (!(*head)->next)
-  {
-    free(*head);
-    *head = NULL;
-    return;
-  }
-  deleteEnd(&((*head)->next));
-}
-
 void peek(Node *head)
 {
   if (!head)
+  {
+    printf("Queue is empty\n");
     return;
-  printf("%d\n", head->data);
+  }
+  printf("Data: %d  Priority: %d", head->data, head->priority);
 }
 
 void display(Node *head)
@@ -72,16 +55,13 @@ void display(Node *head)
 
 int main()
 {
-  Node *head = NULL;
-  int choice, data;
-
+  int choice, data, priority;
   printf("0. Exit\n");
-  printf("1. Enqueue At Fornt\n");
-  printf("2. Enqueue At End\n");
-  printf("3. Dequeue At Front\n");
-  printf("4. Dequeue At End\n");
-  printf("5. Peek\n");
-  printf("6. Display\n");
+  printf("1. Enqueue\n");
+  printf("2. Dequeue\n");
+  printf("3. Peek\n");
+  printf("4. Display\n");
+  Node *head = NULL;
 
   while (1)
   {
@@ -95,28 +75,21 @@ int main()
     case 1:
       printf("Enter data: ");
       scanf("%d", &data);
-      head = enqueueStart(head, data);
+      printf("Enter priority: ");
+      scanf("%d", &priority);
+      head = insert(head, data, priority);
       break;
     case 2:
-      printf("Enter data: ");
-      scanf("%d", &data);
-      head = enqueueEnd(head, data);
+      delete (&head);
       break;
     case 3:
-      deleteStart(&head);
-      break;
-    case 4:
-      deleteEnd(&head);
-      break;
-    case 5:
       peek(head);
       break;
-    case 6:
+    case 4:
       display(head);
-      printf("\n");
       break;
     default:
-      printf("Invlaid Choice,,,\n");
+      printf("Invalid choice...\n");
     }
   }
   return 0;

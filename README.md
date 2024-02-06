@@ -55,15 +55,15 @@ Practice List for lab exm :(  --->
 12. BST - Done
 13. Insert In a Sorted Way - Done
 14. AVL - Done
-15. Horner
-16. BFS
-17. DFS
-18. Infix to Postfix
-19. Prefix to Postfix
+15. Horner - Done
+16. BFS - Done
+17. DFS - Done
+18. Infix to Postfix - Done
+19. Prefix to Postfix - Done
 20. Postfix Evaluation - Done
-21. Tower Of Hanoi
+21. Tower Of Hanoi - Done
 22. Stack with Q - Done
 23. Q with Stack - Done
-24. Expression Tree 
+24. Expression Tree - Done
 25. Josephus 
-26. Heap Sort
+26. Heap Sort - Done
