@@ -12,7 +12,7 @@ void push(char x)
 
 char pop()
 {
-  if (top == -1) 
+  if (top == -1)
     return -1;
   else
     return stack[top--];

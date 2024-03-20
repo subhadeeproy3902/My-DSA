@@ -38,6 +38,7 @@ void Graph_destroy(Graph *g)
 void Graph_addEdge(Graph *g, int v, int w)
 {
   g->adj[v][w] = true;
+  g->adj[w][v] = true;
 }
 
 void BFS_iterative(Graph *g, int s)
@@ -70,40 +71,6 @@ void BFS_iterative(Graph *g, int s)
   }
 }
 
-void BFS_LevelwisePrint(Graph *g, int s)
-{
-  int level[MAX_VERTICES];
-  bool visited[MAX_VERTICES];
-  int queue[MAX_VERTICES];
-  int front = 0, rear = 0;
-
-  for (int i = 0; i < g->V; i++)
-  {
-    visited[i] = false;
-    level[i] = -1;
-  }
-
-  visited[s] = true;
-  level[s] = 0;
-  queue[rear++] = s;
-
-  while (front != rear)
-  {
-    int v = queue[front++];
-    printf("Vertex: %d, Level: %d\n", v, level[v]);
-
-    for (int i = 0; i < g->V; i++)
-    {
-      if (g->adj[v][i] && !visited[i])
-      {
-        visited[i] = true;
-        level[i] = level[v] + 1;
-        queue[rear++] = i;
-      }
-    }
-  }
-}
-
 int main()
 {
   Graph *g = Graph_create(4);
@@ -117,9 +84,6 @@ int main()
 
   printf("BFS Levelwise Print:\n");
   BFS_iterative(g, 2);
-
-  printf("\nBFS Levelwise Print:\n");
-  BFS_LevelwisePrint(g, 2);
 
   Graph_destroy(g);
 

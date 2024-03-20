@@ -1,96 +1,58 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node
-{
-  int data, priority;
-  struct Node *next;
-} Node;
+int top = -1;
+char stack[100];
 
-Node *createNode(int data, int priority)
+int precedence(char ch)
 {
-  Node *n = (Node *)malloc(sizeof(Node));
-  n->data = data;
-  n->priority = priority;
-  n->next = NULL;
-  return n;
+  if (ch == '+' || ch == '-')
+    return 1;
+  if (ch == '*' || ch == '/')
+    return 2;
+  if (ch == '^')
+    return 3;
+  return -1;
 }
 
-Node *insert(Node *head, int data, int priority)
+void push(char ch)
 {
-  if (!head || head->priority > priority)
+  stack[++top] = ch;
+}
+
+char pop()
+{
+  if (top == -1)
+    return -1;
+  return stack[top--];
+}
+
+void infixToPostfix(char *exp)
+{
+  char *e;
+  char x;
+  e = exp;
+  while (*e != '\0')
   {
-    Node *n = createNode(data, priority);
-    n->next = head;
-    return n;
-  }
-  head->next = insert(head->next, data, priority);
-  return head;
-}
-
-void delete(Node **head)
-{
-  Node *temp = *head;
-  *head = (*head)->next;
-  free(temp);
-}
-
-void peek(Node *head)
-{
-  if (!head)
-  {
-    printf("Queue is empty\n");
-    return;
-  }
-  printf("Data: %d  Priority: %d", head->data, head->priority);
-}
-
-void display(Node *head)
-{
-  if (!head)
-    return;
-  printf("%d ", head->data);
-  display(head->next);
-}
-
-int main()
-{
-  int choice, data, priority;
-  printf("0. Exit\n");
-  printf("1. Enqueue\n");
-  printf("2. Dequeue\n");
-  printf("3. Peek\n");
-  printf("4. Display\n");
-  Node *head = NULL;
-
-  while (1)
-  {
-    printf("Enter choice: ");
-    scanf("%d", &choice);
-
-    switch (choice)
+    if (isalnum(*e))
+      printf("%c", *e);
+    else if (*e == '(')
+      push(*e);
+    else if (*e == ')')
     {
-    case 0:
-      exit(1);
-    case 1:
-      printf("Enter data: ");
-      scanf("%d", &data);
-      printf("Enter priority: ");
-      scanf("%d", &priority);
-      head = insert(head, data, priority);
-      break;
-    case 2:
-      delete (&head);
-      break;
-    case 3:
-      peek(head);
-      break;
-    case 4:
-      display(head);
-      break;
-    default:
-      printf("Invalid choice...\n");
+      while ((x = pop()) != '(')
+        printf("%c", x);
     }
+    else
+    {
+      while (precedence(stack[top]) >= precedence(*e))
+        printf("%c", pop());
+      push(*e);
+    }
+    e++;
   }
-  return 0;
+  while (top != -1)
+  {
+    printf("%c", pop());
+  }
 }
